@@ -1,2 +1,2 @@
 # Munt js
-Documentation: (https://docs.getmunt.com)[docs.getmunt.com]
+Documentation: https://docs.getmunt.com
