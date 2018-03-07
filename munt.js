@@ -51,7 +51,7 @@ function checkout(params, callback) {
 
             console.log(response);
 
-            if (response.origin === host) {
+            if (response.origin === "https://getmunt.com") {
 
                 var data = response.data;
 
@@ -61,6 +61,7 @@ function checkout(params, callback) {
 
                     response = {error: false, id: data.id};
                     callback(response);
+                    closeIFrame();
 
                 } else {
 
@@ -89,7 +90,7 @@ function checkout(params, callback) {
 
 function closeIFrame() {
 
-    setAttributes(e, {'src' : host + '/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+    setAttributes(e, {'src' : 'https://getmunt.com/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
     '    display: block;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
