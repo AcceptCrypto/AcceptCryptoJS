@@ -7,7 +7,7 @@ setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.
 '    display: block;' +
 '    border: 0px none transparent;' +
 '    overflow-x: hidden;' +
-'    overflow-y: auto;' +
+'    overflow-y: hidden;' +
 '    visibility: hidden;' +
 '    margin: 0px;' +
 '    padding: 0px;' +
@@ -34,7 +34,7 @@ function checkout(params, callback) {
         '    display: block;' +
         '    border: 0px none transparent;' +
         '    overflow-x: hidden;' +
-        '    overflow-y: auto;' +
+        '    overflow-y: hidden;' +
         '    visibility: visible;' +
         '    margin: 0px;' +
         '    padding: 0px;' +
@@ -94,7 +94,7 @@ function closeIFrame() {
     '    display: block;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
-    '    overflow-y: auto;' +
+    '    overflow-y: hidden;' +
     '    visibility: hidden;' +
     '    margin: 0px;' +
     '    padding: 0px;' +
