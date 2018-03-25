@@ -1,5 +1,5 @@
 /**
- * Created by Sven on 11-12-2017
+ * Made with ♥ by Munt - 2018
  */
 
 var e = document.createElement("iframe");
