@@ -1,9 +1,9 @@
 /**
- * Created by Sven on 11-12-2017.
+ * Created by Sven on 11-12-2017
  */
 
 var e = document.createElement("iframe");
-setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : 'http://localhost:8000/checkout', 'style' :
+setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : 'https://getmunt.com/checkout', 'style' :
 '    z-index: -1;' +
 '    display: block;' +
 '    border: 0px none transparent;' +
@@ -26,13 +26,11 @@ window.onload = function () {
 
 function checkout(params, callback) {
 
-    var bc = new BroadcastChannel("checkout_response");
-
     var response = {};
 
     if(params.token !== undefined){
 
-        setAttributes(e, {'src' : 'http://localhost:8000/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+        setAttributes(e, {'src' : 'https://getmunt.com/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
         '    display: block;' +
         '    border: 0px none transparent;' +
         '    overflow-x: hidden;' +
@@ -54,7 +52,7 @@ function checkout(params, callback) {
 
             console.log(response);
 
-            if (response.origin === "http://localhost:8000") {
+            if (response.origin === "https://getmunt.com") {
 
                 var data = response.data;
 
@@ -107,7 +105,7 @@ function checkoutButton(params, callback) {
 
     setAttributes(link, {
         "rel" : "stylesheet",
-        "href" : "css/munt.css"
+        "href" : "https://getmunt.com/v1/css/munt.css"
     });
 
     document.head.appendChild(link);
@@ -124,7 +122,7 @@ function checkoutButton(params, callback) {
 
             if(params.token !== undefined) {
 
-                setAttributes(e, {'src' : 'http://localhost:8000/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+                setAttributes(e, {'src' : 'https://getmunt.com/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
                 '    display: block;' +
                 '    border: 0px none transparent;' +
                 '    overflow-x: hidden;' +
@@ -155,7 +153,7 @@ function checkoutButton(params, callback) {
 
             console.log(response);
 
-            if (response.origin === "http://localhost:8000") {
+            if (response.origin === "https://getmunt.com") {
 
                 var data = response.data;
 
@@ -199,7 +197,7 @@ function checkoutButton(params, callback) {
 
 function closeIFrame() {
 
-    setAttributes(e, {'src' : 'http://localhost:8000/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
+    setAttributes(e, {'src' : 'https://getmunt.com/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
     '    display: block;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
