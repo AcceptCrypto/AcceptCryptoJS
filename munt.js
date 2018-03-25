@@ -3,7 +3,8 @@
  */
 
 var e = document.createElement("iframe");
-setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : 'https://getmunt.com/checkout', 'style' : 'z-index: 2147483647;' +
+setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : 'http://localhost:8000/checkout', 'style' :
+'    z-index: -1;' +
 '    display: block;' +
 '    border: 0px none transparent;' +
 '    overflow-x: hidden;' +
@@ -14,7 +15,8 @@ setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.
 '    position: fixed;' +
 '    left: 0px;' +
 '    top: 0px;' +
-'    height: 100%;'});
+'    height: 100%;' +
+'    pointer-events: none;'});
 
 window.onload = function () {
 
@@ -30,7 +32,7 @@ function checkout(params, callback) {
 
     if(params.token !== undefined){
 
-        setAttributes(e, {'src' : 'https://getmunt.com/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+        setAttributes(e, {'src' : 'http://localhost:8000/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
         '    display: block;' +
         '    border: 0px none transparent;' +
         '    overflow-x: hidden;' +
@@ -41,7 +43,8 @@ function checkout(params, callback) {
         '    position: fixed;' +
         '    left: 0px;' +
         '    top: 0px;' +
-        '    height: 100%;'});
+        '    height: 100%;' +
+        '    pointer-events: auto;'});
 
         var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
         var eventer = window[eventMethod];
@@ -51,7 +54,7 @@ function checkout(params, callback) {
 
             console.log(response);
 
-            if (response.origin === "https://getmunt.com") {
+            if (response.origin === "http://localhost:8000") {
 
                 var data = response.data;
 
@@ -65,8 +68,18 @@ function checkout(params, callback) {
 
                 } else {
 
-                    response = {error: true, message: "An error occurred, please try again"};
-                    callback(response);
+                    if (data.close) {
+
+                        closeIFrame();
+                        response = {error: true, message: "Aborted payment"};
+                        callback(response);
+
+                    } else {
+
+                        response = {error: true, message: "An error occurred, please try again"};
+                        callback(response);
+
+                    }
 
                 }
 
@@ -88,9 +101,105 @@ function checkout(params, callback) {
 
 }
 
+function checkoutButton(params, callback) {
+
+    var link = document.createElement("link");
+
+    setAttributes(link, {
+        "rel" : "stylesheet",
+        "href" : "css/munt.css"
+    });
+
+    document.head.appendChild(link);
+
+    if (document.head.contains(link)) {
+
+        var button = document.getElementById("muntCheckoutButton");
+
+        button.addEventListener("click", function( event ) {
+
+            event.preventDefault();
+
+            var response = {};
+
+            if(params.token !== undefined) {
+
+                setAttributes(e, {'src' : 'http://localhost:8000/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+                '    display: block;' +
+                '    border: 0px none transparent;' +
+                '    overflow-x: hidden;' +
+                '    overflow-y: hidden;' +
+                '    visibility: visible;' +
+                '    margin: 0px;' +
+                '    padding: 0px;' +
+                '    position: fixed;' +
+                '    left: 0px;' +
+                '    top: 0px;' +
+                '    height: 100%;' +
+                '    pointer-events: auto;'});
+
+            } else {
+
+                response = {error: true, message: "missing payment_id"};
+                callback(response);
+
+            }
+
+        });
+
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod ===  "attachEvent" ? "onmessage" : "message";
+
+        eventer(messageEvent, function(response){
+
+            console.log(response);
+
+            if (response.origin === "http://localhost:8000") {
+
+                var data = response.data;
+
+                console.log(data);
+
+                if (!data.error) {
+
+                    response = {error: false, id: data.id};
+                    callback(response);
+                    closeIFrame();
+
+                } else {
+
+                    if (data.close) {
+
+                        closeIFrame();
+                        response = {error: true, message: "Aborted payment"};
+                        callback(response);
+
+                    } else {
+
+                        response = {error: true, message: "An error occurred, please try again"};
+                        callback(response);
+
+                    }
+
+                }
+
+            } else {
+
+                response = {error: true, message: "Invalid origin " + response.origin};
+                callback(response);
+
+            }
+
+        }, false);
+
+    }
+
+}
+
 function closeIFrame() {
 
-    setAttributes(e, {'src' : 'https://getmunt.com/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+    setAttributes(e, {'src' : 'http://localhost:8000/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
     '    display: block;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
@@ -102,7 +211,8 @@ function closeIFrame() {
     '    left: 0px;' +
     '    top: 0px;' +
     '    width: 100%;' +
-    '    height: 100%;'});
+    '    height: 100%;' +
+    '    pointer-events: none;'});
     document.body.appendChild(e);
 
 }
