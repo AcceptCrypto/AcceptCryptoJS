@@ -1,9 +1,11 @@
 /**
- * Made with ♥ by Munt - 2018
+ * Created by Sven on 11-12-2017.
  */
 
+var host = "https://acceptcryp.to";
+
 var e = document.createElement("iframe");
-setAttributes(e, {'id' : 'MuntIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : 'https://getmunt.com/checkout', 'style' :
+setAttributes(e, {'id' : 'CheckoutIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : host+'/checkout', 'style' :
 '    z-index: -1;' +
 '    display: block;' +
 '    border: 0px none transparent;' +
@@ -25,12 +27,12 @@ window.onload = function () {
 };
 
 function checkout(params, callback) {
-
+    
     var response = {};
 
     if(params.token !== undefined){
 
-        setAttributes(e, {'src' : 'https://getmunt.com/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+        setAttributes(e, {'src' : host+'/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
         '    display: block;' +
         '    border: 0px none transparent;' +
         '    overflow-x: hidden;' +
@@ -50,41 +52,38 @@ function checkout(params, callback) {
 
         eventer(messageEvent, function(response){
 
-            console.log(response);
-
-            if (response.origin === "https://getmunt.com") {
+            if (response.origin === host) {
 
                 var data = response.data;
 
                 console.log(data);
 
-                if (!data.error) {
+                if (data.type === "checkout") {
 
-                    response = {error: false, id: data.id};
-                    callback(response);
-                    closeIFrame();
+                    if (data.error === false) {
 
-                } else {
-
-                    if (data.close) {
-
-                        closeIFrame();
-                        response = {error: true, message: "Aborted payment"};
+                        response = {error: false, id: data.id};
                         callback(response);
+                        closeIFrame();
 
                     } else {
 
-                        response = {error: true, message: "An error occurred, please try again"};
-                        callback(response);
+                        if (data.close === true) {
+
+                            closeIFrame();
+                            response = {error: true, message: "Aborted payment"};
+                            callback(response);
+
+                        } else {
+
+                            response = {error: true, message: "An error occurred, please try again"};
+                            callback(response);
+
+                        }
 
                     }
 
                 }
-
-            } else {
-
-                response = {error: true, message: "Invalid origin " + response.origin};
-                callback(response);
 
             }
 
@@ -105,14 +104,14 @@ function checkoutButton(params, callback) {
 
     setAttributes(link, {
         "rel" : "stylesheet",
-        "href" : "https://getmunt.com/v1/css/munt.css"
+        "href" : host+"/v1/css/checkout.css"
     });
 
     document.head.appendChild(link);
 
     if (document.head.contains(link)) {
 
-        var button = document.getElementById("muntCheckoutButton");
+        var button = document.getElementById("CheckoutButton");
 
         button.addEventListener("click", function( event ) {
 
@@ -122,7 +121,7 @@ function checkoutButton(params, callback) {
 
             if(params.token !== undefined) {
 
-                setAttributes(e, {'src' : 'https://getmunt.com/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+                setAttributes(e, {'src' : host+'/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
                 '    display: block;' +
                 '    border: 0px none transparent;' +
                 '    overflow-x: hidden;' +
@@ -153,39 +152,36 @@ function checkoutButton(params, callback) {
 
             console.log(response);
 
-            if (response.origin === "https://getmunt.com") {
+            if (response.origin === host) {
 
                 var data = response.data;
 
-                console.log(data);
+                if (data.type === "checkout") {
 
-                if (!data.error) {
+                    if (data.error === false) {
 
-                    response = {error: false, id: data.id};
-                    callback(response);
-                    closeIFrame();
-
-                } else {
-
-                    if (data.close) {
-
-                        closeIFrame();
-                        response = {error: true, message: "Aborted payment"};
+                        response = {error: false, id: data.id};
                         callback(response);
+                        closeIFrame();
 
                     } else {
 
-                        response = {error: true, message: "An error occurred, please try again"};
-                        callback(response);
+                        if (data.close === true) {
+
+                            closeIFrame();
+                            response = {error: true, message: "Aborted payment"};
+                            callback(response);
+
+                        } else {
+
+                            response = {error: true, message: "An error occurred, please try again"};
+                            callback(response);
+
+                        }
 
                     }
 
                 }
-
-            } else {
-
-                response = {error: true, message: "Invalid origin " + response.origin};
-                callback(response);
 
             }
 
@@ -197,7 +193,7 @@ function checkoutButton(params, callback) {
 
 function closeIFrame() {
 
-    setAttributes(e, {'src' : 'https://getmunt.com/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
+    setAttributes(e, {'src' : host+'/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
     '    display: block;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
