@@ -5,9 +5,9 @@
 var host = "https://acceptcryp.to";
 
 var e = document.createElement("iframe");
-setAttributes(e, {'id' : 'CheckoutIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : host+'/checkout', 'style' :
+setAttributes(e, {'id' : 'CheckoutIFrame', 'allowfullscreen' : '', 'onload' : 'this.width=window.innerWidth;',  'src' : host+'/embed', 'style' :
 '    z-index: -1;' +
-'    display: block;' +
+'    display: none;' +
 '    border: 0px none transparent;' +
 '    overflow-x: hidden;' +
 '    overflow-y: hidden;' +
@@ -32,7 +32,7 @@ function checkout(params, callback) {
 
     if(params.token !== undefined){
 
-        setAttributes(e, {'src' : host+'/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+        setAttributes(e, {'src' : host+'/embed/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
         '    display: block;' +
         '    border: 0px none transparent;' +
         '    overflow-x: hidden;' +
@@ -76,7 +76,7 @@ function checkout(params, callback) {
 
                         } else {
 
-                            response = {error: true, message: "An error occurred, please try again"};
+                            response = {error: true, message: data.message};
                             callback(response);
 
                         }
@@ -121,7 +121,7 @@ function checkoutButton(params, callback) {
 
             if(params.token !== undefined) {
 
-                setAttributes(e, {'src' : host+'/checkout/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
+                setAttributes(e, {'src' : host+'/embed/' + params.token, 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: 2147483647;' +
                 '    display: block;' +
                 '    border: 0px none transparent;' +
                 '    overflow-x: hidden;' +
@@ -193,8 +193,8 @@ function checkoutButton(params, callback) {
 
 function closeIFrame() {
 
-    setAttributes(e, {'src' : host+'/checkout/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
-    '    display: block;' +
+    setAttributes(e, {'src' : host+'/embed/', 'onload' : 'this.width=window.innerWidth;', 'style' : 'z-index: -1;' +
+    '    display: none;' +
     '    border: 0px none transparent;' +
     '    overflow-x: hidden;' +
     '    overflow-y: hidden;' +
